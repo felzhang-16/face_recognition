@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Face Recognition</title>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script type="text/javascript" src="/js/constants.js"></script>
+    <script type="text/javascript" src="/js/utils.js"></script>
+    <script type="text/javascript" src="/js/initialise.js"></script>
+    <script type="text/javascript" src="/js/configuration.js"></script>
+    <script type="text/javascript" src="/js/interface.js"></script>
+    <script type="text/javascript" src="/js/staticEvents.js"></script>
+    <script type="text/javascript" src="/js/recognizing.js"></script>
+</head>
+
+<body>
+    <h2>源路径</h2>
+    <input type="text" id="input-source-dir" name="input-source-dir">
+    <button id="input-source-dir-search">Browse</button>
+    <h2>目标路径</h2>
+    <input type="text" id="input-destination-dir" name="input-destination-dir">
+    <button id="input-destination-dir-search">Browse</button>
+    <h2>对照组</h2>
+    <input type="text" id="input-compare-name" placeholder="name" name="input-compare-name">
+    <input type="text" id="input-compare-image" placeholder="image file" name="input-compare-image">
+    <button id="input-compare-image-search">Browse</button>
+    <div id="package-button-wrapper">
+        <button id="button-start-recognition">开始</button>
+    </div>
+    <div id="output">
+        <h2>Output</h2>
+        <textarea readonly></textarea>
+    </div>
+</body>
+
+</html>

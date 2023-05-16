@@ -1,87 +1,82 @@
 import os
-import time
-from multiprocessing import pool, cpu_count
+from multiprocessing import Manager, managers, pool, cpu_count
+from pathlib import Path
 
+from src.config import CONFIG_TYPE
 from src.picture import Picture, KnownPicture
 from src.video import Video
-from src.comm_def import user_data, KNOWN_PERSON
-from src.comm_log import logger
-import dearpygui.dearpygui as dpg
+from src.user_data import UserData
 
 
 VIDEOS = []
 KNOWN_PICTURES = []
 
 
-def collect_picture(origin_pics):
-    for root, _, files in os.walk(user_data.origin_path):
+def set_user_data(configuration: CONFIG_TYPE) -> UserData:
+    user_data = UserData()
+    user_data.set_original_path(configuration["sourceDir"])
+    user_data.set_destination_path(configuration["destinationDir"])
+    user_data.set_known_person(configuration["compare"])
+    return user_data
+
+
+def collect_picture(original_pics: managers.ListProxy, pics_original_path: Path) -> None:
+    for root, _, files in os.walk(pics_original_path):
         for file in files:
-            file_path = os.path.join(root, file)
+            file_path = Path.joinpath(Path(root), file)
             if Picture.is_picture(file_path):
-                pic = Picture(origin_path=file_path)
-                origin_pics.append(pic)
+                pic = Picture(original_path=file_path)
+                original_pics.append(pic)
 
 
-def handle_known_picture():
-    logger.debug('handle_known_picture begin')
-    for name, path in KNOWN_PERSON.items():
-        if KnownPicture.is_picture(path):
-            known = KnownPicture(path, name)
-            known.face_locations()
-            known.face_encodings()
-            KNOWN_PICTURES.append(known)
+def handle_known_picture(known_person: dict[str, list[Path]]) -> None:
+    for name, paths in known_person.items():
+        for path in paths:
+            pic = KnownPicture(name, path)
+            pic.face_locations()
+            pic.face_encodings()
+            KNOWN_PICTURES.append(pic)
 
 
-def handle_one_picture(pic, known_pics, mp_done_pics):
+def handle_one_picture(
+    pic: Picture, known_pics: list[KnownPicture], mp_done_pics: managers.ListProxy, pics_destination_path: Path
+) -> None:
     pic.face_locations()
     pic.face_encodings()
     for know_pic in known_pics:
         pic.compare_face(know_pic)
-    pic.copy_picture(user_data.destination_path)
+    pic.copy_picture(pics_destination_path)
     mp_done_pics.append(pic)
 
 
-def display_process_rate(mp_origin_pics, mp_done_pics):
-    process_rate = 0.0
-    while process_rate < 1.0:
-        process_rate = len(mp_done_pics) / len(mp_origin_pics)
-        print(f'progress is {process_rate}')
-        dpg.set_value("progress", process_rate)
-        time.sleep(5)
-
-
-def process_pictures_with_mp(mp_origin_pics, mp_done_pics):
+def handle_pictures_with_mp(
+    mp_original_pics: managers.ListProxy, mp_done_pics: managers.ListProxy, pics_destination_path: Path
+) -> None:
     mp_pool = pool.Pool(cpu_count())
-    for pic in mp_origin_pics:
-        mp_pool.apply_async(handle_one_picture, args=(pic, KNOWN_PICTURES, mp_done_pics))
-    display_process_rate(mp_origin_pics, mp_done_pics)
+    for pic in mp_original_pics:
+        mp_pool.apply_async(handle_one_picture, args=(pic, KNOWN_PICTURES, mp_done_pics, pics_destination_path))
     mp_pool.close()
     mp_pool.join()
 
 
 def process_video():
-    logger.debug('process_video begin')
-    for root, _, files in os.walk(user_data.origin_path):
+    for root, _, files in os.walk(UserData.original_path):
         for file in files:
             file_path = os.path.join(root, file)
             if Video.is_video(file_path):
-                VIDEOS.append(Video(origin_path=file_path))
+                VIDEOS.append(Video(original_path=file_path))
 
     for know_picture in KNOWN_PICTURES:
         for video in VIDEOS:
             with video as v:
                 v.compare_face(know_picture)
-                v.copy_video(user_data.destination_path)
-
-    logger.debug('process_video end')
+                v.copy_video(UserData.destination_path)
 
 
-def main():
-    handle_known_picture()
-    collect_picture()
-
-
-if __name__ == '__main__':
-    time1 = time.time()
-    main()
-    print(f'==== spend time is {time.time() - time1}')
+def collect_and_process_pics(user_data: UserData) -> None:
+    with Manager() as manager:
+        mp_original_pics = manager.list()
+        mp_done_pics = manager.list()
+        handle_known_picture(user_data.known_person)
+        collect_picture(mp_original_pics, user_data.original_path)
+        handle_pictures_with_mp(mp_original_pics, mp_done_pics, user_data.destination_path)
