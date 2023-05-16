@@ -16,7 +16,7 @@ def set_user_data(configuration: CONFIG_TYPE) -> UserData:
     user_data = UserData()
     user_data.set_original_path(configuration["sourceDir"])
     user_data.set_destination_path(configuration["destinationDir"])
-    user_data.set_known_person(configuration["compare"])
+    user_data.set_compared(configuration["compare"])
     return user_data
 
 
@@ -29,8 +29,8 @@ def collect_picture(original_pics: managers.ListProxy, pics_original_path: Path)
                 original_pics.append(pic)
 
 
-def handle_known_picture(known_person: dict[str, list[Path]]) -> None:
-    for name, paths in known_person.items():
+def handle_known_picture(compared: dict[str, list[Path]]) -> None:
+    for name, paths in compared.items():
         for path in paths:
             pic = KnownPicture(name, path)
             pic.face_locations()
@@ -77,6 +77,6 @@ def collect_and_process_pics(user_data: UserData) -> None:
     with Manager() as manager:
         mp_original_pics = manager.list()
         mp_done_pics = manager.list()
-        handle_known_picture(user_data.known_person)
+        handle_known_picture(user_data.compared)
         collect_picture(mp_original_pics, user_data.original_path)
         handle_pictures_with_mp(mp_original_pics, mp_done_pics, user_data.destination_path)

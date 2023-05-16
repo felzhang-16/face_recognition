@@ -55,7 +55,7 @@ def start_recognition(configuration: CONFIG_TYPE) -> None:
     Logger.info(f"目标路径: {configuration['destinationDir']}")
     Logger.info(f"对照组: 姓名：{configuration['compare']['name']}, 照片：{configuration['compare']['image']}")
     user_data = set_user_data(configuration)
-    if not all([user_data.original_path, user_data.destination_path, user_data.known_person]):
+    if not all([user_data.original_path, user_data.destination_path, user_data.compared]):
         eel.setRecognizingComplete(False)
     else:
         collect_and_process_pics(user_data)

@@ -1,0 +1,4 @@
+eel
+face_recognition
+numpy
+cv2

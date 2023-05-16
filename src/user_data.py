@@ -5,16 +5,11 @@ from src.logger import Logger
 from src.picture import BasePicture
 
 
-ERROR_INVALID_PATH = "路径不存在，请重新输入"
-ERROR_NOT_EMPTY_PATH = "目标路径不为空，请重新输入"
-ERROR_INVALID_KNOWN_PERSON = "需识别数据错误，请重新输入"
-
-
 class UserData:
     def __init__(self) -> None:
         self._original_path: Path | None = None
         self._destination_path: Path | None = None
-        self._known_person: dict[str, list[Path]] | None = None
+        self._compared: dict[str, list[Path]] | None = None
 
     @staticmethod
     def is_path_valid(path: str) -> bool:
@@ -38,7 +33,7 @@ class UserData:
 
     def set_original_path(self, path: str) -> bool:
         if not self.is_path_valid(path):
-            Logger.error('源路径非法，请重新输入')
+            Logger.error("源路径非法，请重新输入")
             return False
         else:
             self._original_path = Path(path)
@@ -50,22 +45,22 @@ class UserData:
 
     def set_destination_path(self, path: str) -> bool:
         if not self.is_path_valid(path) or not self.is_path_empty(path):
-            Logger.error('目标路径非法或不为空，请重新输入')
+            Logger.error("目标路径非法或不为空，请重新输入")
             return False
         else:
             self._destination_path = Path(path)
             return True
 
     @property
-    def known_person(self):
-        return self._known_person
+    def compared(self):
+        return self._compared
 
-    def set_known_person(self, compared: dict[str, str]) -> bool:
+    def set_compared(self, compared: dict[str, str]) -> bool:
         if not BasePicture.is_picture(Path(compared["image"])):
-            Logger.error('对照组非法，请重新输入')
+            Logger.error("对照组非法，请重新输入")
             return False
         else:
-            self._known_person = {compared["name"]: [Path(compared["image"])]}
+            self._compared = {compared["name"]: Path(compared["image"])}
             return True
 
 
