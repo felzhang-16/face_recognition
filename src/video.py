@@ -7,12 +7,12 @@ import shutil
 
 
 class Video():
-    def __init__(self, origin_path) -> None:
-        self._origin_path = origin_path
-        self._compared_results = []
+    def __init__(self, original_path) -> None:
+        self._original_path = original_path
+        self._compared_results: list = []
 
     def __enter__(self):
-        self._video = cv2.VideoCapture(self._origin_path)
+        self._video = cv2.VideoCapture(self._original_path)
         return self
 
     def __exit__(self, *args, **kwargs):
@@ -35,7 +35,7 @@ class Video():
         for known_picture in self._compared_results:
             path = os.path.join(destination, f'{known_picture.person_name}_video')
             Path(path).mkdir(parents=True, exist_ok=True)
-            shutil.copy(self._origin_path, path)
+            shutil.copy(self._original_path, path)
 
     @staticmethod
     def is_video(file):
