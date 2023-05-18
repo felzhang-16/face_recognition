@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pytest
-from src.user_data import UserData
+from face_time.src.user_data import UserData
 from pathlib import Path
 
 

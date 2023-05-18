@@ -2,10 +2,10 @@ import os
 from multiprocessing import Manager, managers, pool, cpu_count
 from pathlib import Path
 
-from src.config import CONFIG_TYPE
-from src.picture import Picture, KnownPicture
-from src.video import Video
-from src.user_data import UserData
+from face_time.src.config import CONFIG_TYPE
+from face_time.src.picture import Picture, KnownPicture
+from face_time.src.video import Video
+from face_time.src.user_data import UserData
 
 
 VIDEOS = []

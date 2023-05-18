@@ -1,12 +1,12 @@
-import face_recognition
-from src.picture import Picture
+import face_time
+from face_time.src.picture import Picture
 import cv2
 import os
 from pathlib import Path
 import shutil
 
 
-class Video():
+class Video:
     def __init__(self, original_path) -> None:
         self._original_path = original_path
         self._compared_results: list = []
@@ -27,21 +27,19 @@ class Video():
             rgb_frame = frame[:, :, ::-1]
             pic = Picture(image=rgb_frame)
             for encoding in pic.encodings:
-                result = face_recognition.compare_faces(known_picture.encodings, encoding, tolerance=0.4)
+                result = face_time.compare_faces(known_picture.encodings, encoding, tolerance=0.4)
                 if result[0]:
                     self._compared_results.append(known_picture)
 
     def copy_video(self, destination):
         for known_picture in self._compared_results:
-            path = os.path.join(destination, f'{known_picture.person_name}_video')
+            path = os.path.join(destination, f"{known_picture.person_name}_video")
             Path(path).mkdir(parents=True, exist_ok=True)
             shutil.copy(self._original_path, path)
 
     @staticmethod
     def is_video(file):
-        if '.mp4' in file.lower():
+        if ".mp4" in file.lower():
             return True
         else:
             return False
-
-

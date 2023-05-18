@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 from pathlib import Path
-from src.logger import Logger
-from src.picture import BasePicture
+from face_time.src.logger import Logger
+from face_time.src.picture import BasePicture
 
 
 class UserData:
