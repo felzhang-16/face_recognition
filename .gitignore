@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 # Data
-data/
+face_time/data/
 
 #Log
 syslog
