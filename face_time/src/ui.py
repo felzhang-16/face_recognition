@@ -2,11 +2,10 @@ import eel
 import sys
 import os
 
-sys.path.append(r"C:\1_WorkSpace\4_Tmp_for_myself\face_recognition")
 from face_time.src.config import FRONTEND_FOLDER, UIOpenMode
 from face_time.src.logger import Logger, add_logger_handler, log_to_ui_output
 from face_time.src.processor import set_user_data, collect_and_process_pics
-from src import dialogs
+from face_time.src import dialogs
 from face_time.src.config import CONFIG_TYPE
 
 

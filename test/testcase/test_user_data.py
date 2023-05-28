@@ -8,7 +8,9 @@ valid_original_paths = [Path.joinpath(Path.cwd(), "test", "data", "original_path
 invalid_original_paths = [Path.joinpath(Path.cwd(), "test", "data", "invalid_path")]
 not_empty_path = [Path.joinpath(Path.cwd(), "test", "data", "invalid_destination_path")]
 
-valid_destination_paths = [Path.joinpath(Path.cwd(), "test", "data", "destination_path")]
+_path = Path.joinpath(Path.cwd(), "test", "data", "destination_path")
+_path.mkdir(exist_ok=True)
+valid_destination_paths = [_path]
 invalid_destination_paths = [Path.joinpath(Path.cwd(), "test", "data", "invalid_destination_path")]
 valid_compared = [{"name": "name_1", "image": Path.joinpath(Path.cwd(), "test", "data", "pics", "valid_pic.jpg")}]
 invalid_compared = [{"name": "name_1", "image": Path.joinpath(Path.cwd(), "test", "data", "pics", "invalid_pic")}]

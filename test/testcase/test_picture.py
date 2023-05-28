@@ -1,8 +1,6 @@
 import os
 import sys
 
-print(f"==== sys.path is {sys.path}")
-print(f"==== __file__ path is {os.path.realpath(__file__)}")
 
 from face_time.src.processor import Picture, KnownPicture
 from pathlib import Path
