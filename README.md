@@ -1,8 +1,18 @@
 # 2023/5/28
-    linter执行
+    优化了UI
+        了解了css
+        了解了html 元素
+    修复了pytest case
+# 2023/5/28
+    linter执行, push之前要执行
         cd C:\1_WorkSpace\4_Tmp_for_myself\face_recognition
         python3 -m black --line-length 120 .
         python3 -m flake8 --max-line-length 120 .
+        python3 -m mypy --config-file .\face_time\src\mypy.ini .
+
+    启动auto_py_to_exe
+        cd C:\1_WorkSpace\4_Tmp_for_myself\auto_py_to_exe\
+        python3 -m auto_py_to_exe
 # 2023/5/15
     基本功能已调通，前端界面基本可用
     后续增加pytest case

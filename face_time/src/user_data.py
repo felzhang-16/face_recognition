@@ -9,7 +9,7 @@ class UserData:
     def __init__(self) -> None:
         self._original_path: Path | None = None
         self._destination_path: Path | None = None
-        self._compared: dict[str, list[Path]] | None = None
+        self._compared: dict[str, Path] | None = None
 
     @staticmethod
     def is_path_valid(path: str) -> bool:

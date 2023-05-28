@@ -2,7 +2,8 @@
 <html>
 
 <head>
-    <title>Face Recognition</title>
+    <title>照片筛选</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.png">
     <script type="text/javascript" src="/eel.js"></script>
     <script type="text/javascript" src="/js/constants.js"></script>
     <script type="text/javascript" src="/js/utils.js"></script>
@@ -11,25 +12,56 @@
     <script type="text/javascript" src="/js/interface.js"></script>
     <script type="text/javascript" src="/js/staticEvents.js"></script>
     <script type="text/javascript" src="/js/recognizing.js"></script>
+    <link rel="stylesheet" href="/css/general.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/modal.css">
 </head>
 
 <body>
-    <h2>源路径</h2>
-    <input type="text" id="input-source-dir" name="input-source-dir">
-    <button id="input-source-dir-search">Browse</button>
-    <h2>目标路径</h2>
-    <input type="text" id="input-destination-dir" name="input-destination-dir">
-    <button id="input-destination-dir-search">Browse</button>
-    <h2>对照组</h2>
-    <input type="text" id="input-compare-name" placeholder="name" name="input-compare-name">
-    <input type="text" id="input-compare-image" placeholder="image file" name="input-compare-image">
-    <button id="input-compare-image-search">Browse</button>
-    <div id="package-button-wrapper">
-        <button id="button-start-recognition">开始</button>
-    </div>
-    <div id="output">
-        <h2>Output</h2>
-        <textarea readonly></textarea>
+    <div class="mid">
+        <div id="header">
+            <div class="title">
+                <a target="_blank"><img src="/favicon.png" /></a>
+                <a target="_blank">
+                    <h1>照片筛选</h1>
+                </a>
+            </div>
+        </div>
+        <div style="padding:20px">
+            <h2>源文件夹</h2>
+            <div class="filepath-browse-layout">
+                <input type="text" id="input-source-dir" name="input-source-dir">
+                <button id="input-source-dir-search">浏览</button>
+            </div>
+        </div>
+        <div style="padding:20px">
+            <h2>目标文件夹</h2>
+            <div class="filepath-browse-layout">
+                <input type="text" id="input-destination-dir" name="input-destination-dir">
+                <button id="input-destination-dir-search">浏览</button>
+            </div>
+        </div>
+        <div style="padding:20px">
+            <h2>筛选目标</h2>
+            <div class="filepath-browse-layout2">
+                <span>姓名：</span>
+                <input type="text" id="input-compare-name" placeholder="英文名" name="input-compare-name">
+            </div>
+            <div class="content" style="display: block;">
+                <div class="option-container.input.with-browse">
+                    <span>照片：</span>
+                    <input type="text" id="input-compare-image" placeholder="照片路径" name="input-compare-image">
+                    <button id="input-compare-image-search">浏览</button>
+                </div>
+            </div>
+        </div>
+        <div id="package-button-wrapper">
+            <button id="button-start-recognition">开始</button>
+        </div>
+        <div id="current-command">
+            <h2>Output</h2>
+            <textarea readonly></textarea>
+        </div>
     </div>
 </body>
 
