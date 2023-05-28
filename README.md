@@ -1,3 +1,8 @@
+# 2023/5/28
+    linter执行
+        cd C:\1_WorkSpace\4_Tmp_for_myself\face_recognition
+        python3 -m black --line-length 120 .
+        python3 -m flake8 --max-line-length 120 .
 # 2023/5/15
     基本功能已调通，前端界面基本可用
     后续增加pytest case

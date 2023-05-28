@@ -1,5 +1,4 @@
 import eel
-import sys
 import os
 
 from face_time.src.config import FRONTEND_FOLDER, UIOpenMode

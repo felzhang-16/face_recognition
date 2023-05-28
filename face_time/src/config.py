@@ -2,6 +2,7 @@ import pathlib
 from enum import Enum
 from typing import TypedDict
 
+
 class UIOpenMode(Enum):
     NONE = None
     CHROME = "chrome"

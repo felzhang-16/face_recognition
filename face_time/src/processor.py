@@ -39,7 +39,10 @@ def handle_known_picture(compared: dict[str, list[Path]]) -> None:
 
 
 def handle_one_picture(
-    pic: Picture, known_pics: list[KnownPicture], mp_done_pics: managers.ListProxy, pics_destination_path: Path
+    pic: Picture,
+    known_pics: list[KnownPicture],
+    mp_done_pics: managers.ListProxy,
+    pics_destination_path: Path,
 ) -> None:
     pic.face_locations()
     pic.face_encodings()
@@ -50,11 +53,16 @@ def handle_one_picture(
 
 
 def handle_pictures_with_mp(
-    mp_original_pics: managers.ListProxy, mp_done_pics: managers.ListProxy, pics_destination_path: Path
+    mp_original_pics: managers.ListProxy,
+    mp_done_pics: managers.ListProxy,
+    pics_destination_path: Path,
 ) -> None:
     mp_pool = pool.Pool(cpu_count())
     for pic in mp_original_pics:
-        mp_pool.apply_async(handle_one_picture, args=(pic, KNOWN_PICTURES, mp_done_pics, pics_destination_path))
+        mp_pool.apply_async(
+            handle_one_picture,
+            args=(pic, KNOWN_PICTURES, mp_done_pics, pics_destination_path),
+        )
     mp_pool.close()
     mp_pool.join()
 
