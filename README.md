@@ -9,6 +9,7 @@
         python3 -m black --line-length 120 .
         python3 -m flake8 --max-line-length 120 .
         python3 -m mypy --config-file .\face_time\src\mypy.ini .
+        python3 -m pytest -s .
 
     启动auto_py_to_exe
         cd C:\1_WorkSpace\4_Tmp_for_myself\auto_py_to_exe\

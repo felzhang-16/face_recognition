@@ -200,7 +200,7 @@ div[id*="section"] .content {
 /* Output */
 
 #output {
-    display: none;
+    /* display: none; */
     /* Hidden by default */
 }
 
