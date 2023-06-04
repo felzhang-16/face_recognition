@@ -200,7 +200,7 @@ div[id*="section"] .content {
 /* Output */
 
 #output {
-    /* display: none; */
+    display: none;
     /* Hidden by default */
 }
 
@@ -248,7 +248,7 @@ div[id*="section"] .content {
     justify-content: space-evenly;
 }
 
-#package-button,
+#button-start-recognition,
 #open-output-folder-button {
     width: 100%;
     background-color: var(--primary);
@@ -265,12 +265,12 @@ div[id*="section"] .content {
     transition: background-color 0.3s;
 }
 
-#package-button:hover,
+#button-start-recognition:hover,
 #open-output-folder-button:hover {
     background-color: var(--primary-darker);
 }
 
-#package-button:disabled {
+#button-start-recognition:disabled {
     background-color: var(--disabled);
     border-color: var(--disabled);
     cursor: not-allowed;

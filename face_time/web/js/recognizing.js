@@ -12,12 +12,15 @@ const setRecognizingState = (newState) => {
     switch (newState) {
         case RECOGNIZING_STATE_READY:
             recognitionButton.disabled = false;
+            outputSection.classList.remove('show');
             outputTextArea.value = '';
             outputTextArea.rows = 0;
+            outputTextArea.classList.remove('failure');
             startButton.innerHTML = '开始';
             return;
         case RECOGNIZING_STATE_RECOGNIZING:
             recognitionButton.disabled = true;
+            outputSection.classList.add('show');
             return;
         case RECOGNIZING_STATE_COMPLETE:
             recognitionButton.disabled = false;
