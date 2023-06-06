@@ -142,11 +142,11 @@ button.large {
     grid-gap: 5px;
 }
 
-/* .option-container.input.with-browse {
+#compare-info-input {
     display: grid;
     grid-template-columns: auto 1fr auto;
     grid-gap: 5px;
-} */
+}
 
 /* Icon-specific */
 

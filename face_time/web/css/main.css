@@ -127,7 +127,6 @@ div[id*="section"] .header h2 {
 
 div[id*="section"] .content {
     display: none;
-    /* Hide sections by default */
     margin: 5px 10px 0 10px;
 }
 
