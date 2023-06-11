@@ -65,7 +65,7 @@ def handle_pictures_with_mp(
     Logger.debug(" - ")
     mp_pool = pool.Pool(cpu_count())
     for pic in mp_original_pics:
-        mp_pool.apply(
+        mp_pool.apply_async(
             handle_one_picture,
             args=(pic, KNOWN_PICTURES, mp_done_pics, pics_destination_path),
         )
