@@ -83,7 +83,7 @@ def test_set_compared_success(compared):
     user_data = UserData()
     result = user_data.set_compared(compared)
     assert result is True
-    assert user_data.compared == {compared["name"]: compared["image"]}
+    assert user_data.compared == {compared["name"]: [compared["image"]]}
 
 
 @pytest.mark.parametrize("compared", invalid_compared)

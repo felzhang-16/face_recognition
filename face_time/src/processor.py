@@ -2,6 +2,7 @@ import os
 from multiprocessing import Manager, managers, pool, cpu_count
 from pathlib import Path
 
+from face_time.src.logger import Logger
 from face_time.src.config import CONFIG_TYPE
 from face_time.src.picture import Picture, KnownPicture
 from face_time.src.video import Video
@@ -13,6 +14,7 @@ KNOWN_PICTURES = []
 
 
 def set_user_data(configuration: CONFIG_TYPE) -> UserData:
+    Logger.debug(f"{configuration}")
     user_data = UserData()
     user_data.set_original_path(configuration["sourceDir"])
     user_data.set_destination_path(configuration["destinationDir"])
@@ -21,6 +23,7 @@ def set_user_data(configuration: CONFIG_TYPE) -> UserData:
 
 
 def collect_picture(original_pics: managers.ListProxy, pics_original_path: Path) -> None:
+    Logger.debug(f"{pics_original_path}")
     for root, _, files in os.walk(pics_original_path):
         for file in files:
             file_path = Path.joinpath(Path(root), file)
@@ -30,6 +33,7 @@ def collect_picture(original_pics: managers.ListProxy, pics_original_path: Path)
 
 
 def handle_known_picture(compared: dict[str, list[Path]]) -> None:
+    Logger.debug(f"{compared}")
     for name, paths in compared.items():
         for path in paths:
             pic = KnownPicture(name, path)
@@ -44,6 +48,7 @@ def handle_one_picture(
     mp_done_pics: managers.ListProxy,
     pics_destination_path: Path,
 ) -> None:
+    Logger.debug(f"{pic._original_path}")
     pic.face_locations()
     pic.face_encodings()
     for know_pic in known_pics:
@@ -57,9 +62,10 @@ def handle_pictures_with_mp(
     mp_done_pics: managers.ListProxy,
     pics_destination_path: Path,
 ) -> None:
+    Logger.debug(" - ")
     mp_pool = pool.Pool(cpu_count())
     for pic in mp_original_pics:
-        mp_pool.apply_async(
+        mp_pool.apply(
             handle_one_picture,
             args=(pic, KNOWN_PICTURES, mp_done_pics, pics_destination_path),
         )
@@ -82,9 +88,10 @@ def process_video():
 
 
 def collect_and_process_pics(user_data: UserData) -> None:
+    Logger.debug(f"{user_data}")
+    handle_known_picture(user_data.compared)
     with Manager() as manager:
         mp_original_pics = manager.list()
         mp_done_pics = manager.list()
-        handle_known_picture(user_data.compared)
         collect_picture(mp_original_pics, user_data.original_path)
         handle_pictures_with_mp(mp_original_pics, mp_done_pics, user_data.destination_path)

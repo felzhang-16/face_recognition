@@ -1,3 +1,11 @@
+# 2023/6/11
+    issue：multiprocessing中，pool async 无法用logging打印
+            但我模拟了个，是可以打印的
+# 2023/6/7
+    下一步要做的事
+        打包成exe
+        exe，端到端验证case
+        github上集成打包成exe，发布release
 # 2023/5/28
     优化了UI
         了解了css

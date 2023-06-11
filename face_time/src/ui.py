@@ -25,9 +25,7 @@ def does_folder_exist(path: str) -> bool:
 def does_folder_empty(path: str) -> bool:
     if os.path.isdir(path):
         if not os.listdir(path):
-            print("return True")
             return True
-    print("return False")
     return False
 
 
@@ -48,17 +46,19 @@ def initialise() -> None:
 
 @eel.expose
 def start_recognition(configuration: CONFIG_TYPE) -> None:
-    Logger.info("开始")
+    Logger.info(" - ")
     Logger.info(f"源路径: {configuration['sourceDir']}")
     Logger.info(f"目标路径: {configuration['destinationDir']}")
     Logger.info(f"对照组: 姓名：{configuration['compare']['name']}, 照片：{configuration['compare']['image']}")
     user_data = set_user_data(configuration)
     if not all([user_data.original_path, user_data.destination_path, user_data.compared]):
+        Logger.error("设置user_data失败, 结束程序")
         eel.setRecognizingComplete(False)
     else:
+        Logger.info("运行程序")
         collect_and_process_pics(user_data)
+        Logger.info("程序运行结束")
         eel.setRecognizingComplete(True)
-    Logger.info("结束")
 
 
 def start_web_app(mode: UIOpenMode) -> None:

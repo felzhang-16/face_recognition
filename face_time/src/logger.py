@@ -4,8 +4,8 @@ import logging
 import eel
 
 
-Logger = logging.getLogger("face_recognition")
-Logger.setLevel("INFO")
+Logger = logging.getLogger(__file__)
+Logger.setLevel("DEBUG")
 
 
 class ForwardToFunctionStream(io.TextIOBase):
@@ -19,7 +19,11 @@ class ForwardToFunctionStream(io.TextIOBase):
 
 def add_logger_handler(logger: logging.Logger, outputer: Callable) -> None:
     handler = logging.StreamHandler(ForwardToFunctionStream(outputer))
-    handler.setFormatter(logging.Formatter("%(asctime)s:%(levelname)-8s: %(message)s", "%Y-%m-%d %H:%M:%S"))
+    handler.setFormatter(
+        logging.Formatter(
+            "%(asctime)s:%(levelname)s:%(filename)s:%(lineno)s: %(funcName)s: %(message)s", "%Y-%m-%d %H:%M:%S"
+        )
+    )
     logger.addHandler(handler)
 
 

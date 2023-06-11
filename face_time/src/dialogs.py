@@ -24,5 +24,4 @@ def ask_file(file_type):
     file_path = askopenfilename(parent=root, filetypes=file_types)
     root.update()
 
-    # bool(file_path) will help filter our the negative cases; an empty string or an empty tuple
     return file_path if bool(file_path) else None
