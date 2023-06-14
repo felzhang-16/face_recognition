@@ -1,8 +1,10 @@
-import eel
 import os
 
+import eel
+
+from face_time.src.logger import Logger
 from face_time.src.config import FRONTEND_FOLDER, UIOpenMode
-from face_time.src.logger import Logger, add_logger_handler, log_to_ui_output
+from face_time.src.logger import add_logger_handler, log_to_ui_output
 from face_time.src.processor import set_user_data, collect_and_process_pics
 from face_time.src import dialogs
 from face_time.src.config import CONFIG_TYPE
