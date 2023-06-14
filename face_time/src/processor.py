@@ -1,8 +1,15 @@
 import os
-from multiprocessing import Manager, managers, pool, cpu_count
+from multiprocessing import Manager, managers, Pool, cpu_count, current_process
 from pathlib import Path
+import logging
+from logging.handlers import QueueHandler
+import queue
+from typing import Any
+from threading import Thread
 
-from face_time.src.logger import Logger
+import eel
+
+from face_time.src.logger import Logger, logger_thread
 from face_time.src.config import CONFIG_TYPE
 from face_time.src.picture import Picture, KnownPicture
 from face_time.src.video import Video
@@ -47,7 +54,13 @@ def handle_one_picture(
     known_pics: list[KnownPicture],
     mp_done_pics: managers.ListProxy,
     pics_destination_path: Path,
+    queue: queue.Queue[Any],
 ) -> None:
+    # create logger for sub process, which name mush be "app"
+    #     logger name is the same as main process logger
+    Logger = logging.getLogger("app")
+    Logger.addHandler(QueueHandler(queue))
+    Logger.setLevel(logging.DEBUG)
     Logger.debug(f"{pic._original_path}")
     pic.face_locations()
     pic.face_encodings()
@@ -58,19 +71,27 @@ def handle_one_picture(
 
 
 def handle_pictures_with_mp(
-    mp_original_pics: managers.ListProxy,
-    mp_done_pics: managers.ListProxy,
-    pics_destination_path: Path,
+    mp_original_pics: managers.ListProxy, mp_done_pics: managers.ListProxy, pics_destination_path: Path, log_queue
 ) -> None:
-    Logger.debug(" - ")
-    mp_pool = pool.Pool(cpu_count())
-    for pic in mp_original_pics:
-        mp_pool.apply_async(
-            handle_one_picture,
-            args=(pic, KNOWN_PICTURES, mp_done_pics, pics_destination_path),
-        )
-    mp_pool.close()
-    mp_pool.join()
+    Logger.info("Main process start!")
+    thread = Thread(target=logger_thread, args=(log_queue, eel.putMessageInOutput))
+    thread.start()
+
+    with Pool(cpu_count()) as pool:
+        results = [
+            pool.apply_async(
+                handle_one_picture,
+                args=(pic, KNOWN_PICTURES, mp_done_pics, pics_destination_path, log_queue),
+            )
+            for pic in mp_original_pics
+        ]
+        for result in results:
+            result.wait()
+        Logger.info("Main process done!")
+        log_queue.put(None)
+        pool.close()
+        pool.join()
+    thread.join()
 
 
 def process_video():
@@ -91,7 +112,8 @@ def collect_and_process_pics(user_data: UserData) -> None:
     Logger.debug(f"{user_data}")
     handle_known_picture(user_data.compared)
     with Manager() as manager:
+        log_queue = manager.Queue()
         mp_original_pics = manager.list()
         mp_done_pics = manager.list()
         collect_picture(mp_original_pics, user_data.original_path)
-        handle_pictures_with_mp(mp_original_pics, mp_done_pics, user_data.destination_path)
+        handle_pictures_with_mp(mp_original_pics, mp_done_pics, user_data.destination_path, log_queue)

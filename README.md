@@ -1,6 +1,16 @@
 # 2023/6/11
     issue：multiprocessing中，pool async 无法用logging打印
             但我模拟了个，是可以打印的
+            1. 在__name__ == __main__ 里更新Logger，加上handler不起作用，子进程里没有handler
+            2. 子进程用的KNOW_PERSON是主进程主动传进去的
+            3. 方案
+               1. 方案1： 把Logger传到子进程里
+               2. 方案2. https://superfastpython.com/multiprocessing-pool-shared-global-variables/
+                  1. list可以在子进程间share，queue也可以，但logger不能，子进程中还是没有logger.handler
+               3. https://blog.csdn.net/Bear_861110453/article/details/103473110
+                  1. https://zjuturtle.com/2021/11/09/python-multiprocess-logging/
+                  2. https://docs.python.org/3/howto/logging-cookbook.html
+                  3. https://cloud.tencent.com/developer/ask/sof/28711
 # 2023/6/7
     下一步要做的事
         打包成exe
