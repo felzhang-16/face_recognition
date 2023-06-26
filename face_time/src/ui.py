@@ -10,9 +10,6 @@ from face_time.src import dialogs
 from face_time.src.config import CONFIG_TYPE
 
 
-eel.init(FRONTEND_FOLDER)
-
-
 @eel.expose
 def does_file_exist(file_path: str) -> bool:
     return os.path.isfile(file_path)
@@ -65,10 +62,7 @@ def start_recognition(configuration: CONFIG_TYPE) -> None:
 
 def start_web_app(mode: UIOpenMode) -> None:
     try:
+        eel.init(FRONTEND_FOLDER)
         eel.start("index.html", size=(650, 672), mode=mode.value)
     except (SystemExit, KeyboardInterrupt):
         pass
-
-
-if __name__ == "__main__":
-    start_web_app(UIOpenMode.CHROME)
