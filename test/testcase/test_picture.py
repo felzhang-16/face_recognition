@@ -1,11 +1,5 @@
 from face_time.src.processor import Picture, KnownPicture
-from pathlib import Path
-
-PERSON_1 = Path.joinpath(Path.cwd(), "test", "data", "pics", "person_1.jpg")
-KNOWN_PERSION_1 = {
-    "name": "name_1",
-    "image": Path.joinpath(Path.cwd(), "test", "data", "pics", "valid_pic.jpg"),
-}
+from common.config import KNOWN_PERSION_1, PERSON_1
 
 
 def test_face_recognition_is_correct():

@@ -1,52 +1,37 @@
 # -*- coding: utf-8 -*-
 import pytest
+
 from face_time.src.user_data import UserData
-from pathlib import Path
+from common.config import (
+    VALID_ORIGINAL_PATHS,
+    INVALID_ORIGINAL_PATHS,
+    NOT_EMPTY_PATH,
+    INVALID_DESTINATION_PATHS,
+    INVALID_COMPARED,
+    VALID_COMPARED,
+)
 
 
-valid_original_paths = [Path.joinpath(Path.cwd(), "test", "data", "original_path")]
-invalid_original_paths = [Path.joinpath(Path.cwd(), "test", "data", "invalid_path")]
-not_empty_path = [Path.joinpath(Path.cwd(), "test", "data", "invalid_destination_path")]
-
-_path = Path.joinpath(Path.cwd(), "test", "data", "destination_path")
-_path.mkdir(exist_ok=True)
-valid_destination_paths = [_path]
-invalid_destination_paths = [Path.joinpath(Path.cwd(), "test", "data", "invalid_destination_path")]
-valid_compared = [
-    {
-        "name": "name_1",
-        "image": Path.joinpath(Path.cwd(), "test", "data", "pics", "valid_pic.jpg"),
-    }
-]
-invalid_compared = [
-    {
-        "name": "name_1",
-        "image": Path.joinpath(Path.cwd(), "test", "data", "pics", "invalid_pic"),
-    }
-]
-
-
-@pytest.mark.parametrize("path", valid_original_paths)
+@pytest.mark.parametrize("path", VALID_ORIGINAL_PATHS)
 def test_valid_path(path):
     assert UserData.is_path_valid(path) is True
 
 
-@pytest.mark.parametrize("path", invalid_original_paths)
+@pytest.mark.parametrize("path", INVALID_ORIGINAL_PATHS)
 def test_invalid_path(path):
     assert UserData.is_path_valid(path) is False
 
 
-@pytest.mark.parametrize("path", not_empty_path)
+@pytest.mark.parametrize("path", NOT_EMPTY_PATH)
 def test_not_empty_path(path):
     assert UserData.is_path_empty(path) is False
 
 
-@pytest.mark.parametrize("path", valid_destination_paths)
-def test_empty_path(path):
-    assert UserData.is_path_empty(path) is True
+def test_empty_path(valid_destination_path):
+    assert UserData.is_path_empty(valid_destination_path) is True
 
 
-@pytest.mark.parametrize("path", valid_original_paths)
+@pytest.mark.parametrize("path", VALID_ORIGINAL_PATHS)
 def test_set_original_path_success(path):
     user_data = UserData()
     result = user_data.set_original_path(path)
@@ -54,7 +39,7 @@ def test_set_original_path_success(path):
     assert user_data.original_path == path
 
 
-@pytest.mark.parametrize("path", invalid_original_paths)
+@pytest.mark.parametrize("path", INVALID_ORIGINAL_PATHS)
 def test_set_original_path_fail(path):
     user_data = UserData()
     result = user_data.set_original_path(path)
@@ -62,15 +47,14 @@ def test_set_original_path_fail(path):
     assert user_data.original_path is None
 
 
-@pytest.mark.parametrize("path", valid_destination_paths)
-def test_set_destination_path_success(path):
+def test_set_destination_path_success(valid_destination_path):
     user_data = UserData()
-    result = user_data.set_destination_path(path)
+    result = user_data.set_destination_path(valid_destination_path)
     assert result is True
-    assert user_data.destination_path == path
+    assert user_data.destination_path == valid_destination_path
 
 
-@pytest.mark.parametrize("path", invalid_destination_paths)
+@pytest.mark.parametrize("path", INVALID_DESTINATION_PATHS)
 def test_set_destination_path_fail(path):
     user_data = UserData()
     result = user_data.set_destination_path(path)
@@ -78,7 +62,7 @@ def test_set_destination_path_fail(path):
     assert user_data.destination_path is None
 
 
-@pytest.mark.parametrize("compared", valid_compared)
+@pytest.mark.parametrize("compared", VALID_COMPARED)
 def test_set_compared_success(compared):
     user_data = UserData()
     result = user_data.set_compared(compared)
@@ -86,7 +70,7 @@ def test_set_compared_success(compared):
     assert user_data.compared == {compared["name"]: [compared["image"]]}
 
 
-@pytest.mark.parametrize("compared", invalid_compared)
+@pytest.mark.parametrize("compared", INVALID_COMPARED)
 def test_set_compared_fail(compared):
     user_data = UserData()
     result = user_data.set_compared(compared)

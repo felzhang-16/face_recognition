@@ -1,3 +1,4 @@
+from typing import Optional
 import os
 
 import eel
@@ -29,12 +30,12 @@ def does_folder_empty(path: str) -> bool:
 
 
 @eel.expose
-def ask_folder() -> str | None:
+def ask_folder() -> Optional[str]:
     return dialogs.ask_folder()
 
 
 @eel.expose
-def ask_file(file_type) -> str | None:
+def ask_file(file_type) -> Optional[str]:
     return dialogs.ask_file(file_type)
 
 

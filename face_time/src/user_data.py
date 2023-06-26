@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from typing import Optional
+
 import os
 from pathlib import Path
 
@@ -8,8 +10,8 @@ from face_time.src.picture import BasePicture
 
 class UserData:
     def __init__(self) -> None:
-        self._original_path: Path | None = None
-        self._destination_path: Path | None = None
+        self._original_path: Optional[Path] = None
+        self._destination_path: Optional[Path] = None
         self._compared: dict[str, list[Path]] | None = None
 
     @staticmethod

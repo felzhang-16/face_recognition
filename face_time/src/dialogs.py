@@ -1,8 +1,10 @@
+from typing import Optional
+
 from tkinter import Tk
 from tkinter.filedialog import askdirectory, askopenfilename
 
 
-def ask_folder() -> str | None:
+def ask_folder() -> Optional[str]:
     root = Tk()
     root.withdraw()
     root.wm_attributes("-topmost", 1)
@@ -12,7 +14,7 @@ def ask_folder() -> str | None:
     return folder if bool(folder) else None
 
 
-def ask_file(file_type):
+def ask_file(file_type: str) -> Optional[str]:
     """Ask the user to select a file"""
     root = Tk()
     root.withdraw()
