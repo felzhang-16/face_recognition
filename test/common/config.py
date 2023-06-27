@@ -23,3 +23,4 @@ INVALID_COMPARED = [
         "image": Path.joinpath(Path.cwd(), "test", "data", "pics", "invalid_pic"),
     }
 ]
+SOURCEDIR = Path.joinpath(Path.cwd(), "test", "data", "pics")

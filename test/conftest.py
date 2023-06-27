@@ -1,10 +1,11 @@
 import pytest
 from pathlib import Path
+import shutil
 
 
 @pytest.fixture
 def valid_destination_path():
-    _path = Path.joinpath(Path.cwd(), "test", "data", "destination_path")
-    _path.mkdir(exist_ok=True)
-    yield _path
-    # clean destination path
+    path = Path.joinpath(Path.cwd(), "test", "data", "destination_path")
+    path.mkdir(exist_ok=True)
+    yield path
+    shutil.rmtree(path)

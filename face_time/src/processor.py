@@ -111,9 +111,7 @@ def process_video():
 def collect_and_process_pics(user_data: UserData) -> None:
     Logger.debug(f"{user_data}")
     handle_known_picture(user_data.compared)
-    print(f"1 get_start_method is {get_start_method()}")
     with Manager() as manager:
-        print(f"2 get_start_method is {get_start_method()}")
         log_queue = manager.Queue()
         mp_original_pics = manager.list()
         mp_done_pics = manager.list()
