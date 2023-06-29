@@ -1,3 +1,12 @@
+# 2023/6/28
+    尝试了C:\N-20W1PF3MD6Q3-Data\felzhang\Downloads\Trail3\gui_Trail，淘宝上买的人脸识别软件，一年299元
+    1. 必须联网用，实际用的百度云进行的人脸识别
+       1. https://console.bce.baidu.com/ai/?_=1687940321151#/ai/face/overview/index
+          1. 它会把照片编码成base64，然后都传到百度云上进行比对
+    2. 实际人脸比对结果非常好，准确率100%，且速度很快，因为只有文件上下载就可以了
+       1. C:\1_WorkSpace\4_Tmp_for_myself\face_recognition\face_time\data\test_for_taobao
+       2. 这个程序准确率是40%，gui_Trail是100%
+       3. 这个程序运行时间是40s，gui_Trail是6s
 # 2023/6/11
     issue：multiprocessing中，pool async 无法用logging打印
             但我模拟了个，是可以打印的
